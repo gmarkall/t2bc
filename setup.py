@@ -23,12 +23,6 @@ import os
 import sys
 import versioneer
 
-versioneer.VCS = 'git'
-versioneer.versionfile_source = 't2bc/_version.py'
-versioneer.versionfile_build = 't2bc/_version.py'
-versioneer.tag_prefix = 'v' # tags are like v1.2.0
-versioneer.parentdir_prefix = 't2bc-' # dirname like 'myproject-1.2.0'
-
 
 here_dir = os.path.dirname(os.path.abspath(__file__))
 

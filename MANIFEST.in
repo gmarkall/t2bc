@@ -1,0 +1,2 @@
+include versioneer.py
+include t2bc/_version.py
