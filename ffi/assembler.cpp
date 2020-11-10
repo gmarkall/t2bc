@@ -2,6 +2,7 @@
 #include "llvm/AsmParser/Parser.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
+#include "llvm/IR/Verifier.h"
 #include "llvm/Support/SourceMgr.h"
 #include "llvm/Support/InitLLVM.h"
 #include "llvm/Support/raw_ostream.h"
@@ -12,6 +13,7 @@
 #include <cstdio>
 #include <unistd.h>
 #include <memory>
+#include <iostream>
 
 API_EXPORT(void)
 assemble(LLVMContextRef context, const char *ir)
@@ -32,6 +34,16 @@ assemble(LLVMContextRef context, const char *ir)
   }
   else {
     printf("Parsed OK\n");
+  }
+
+  std::string errorStr;
+  llvm::raw_string_ostream os(errorStr);
+
+  if (llvm::verifyModule(*m.get(), &os)) {
+    printf("Verification failed\n");
+    std::cerr << os.str() << std:: endl;
+  } else {
+    printf("Verification OK\n");
   }
 }
 
