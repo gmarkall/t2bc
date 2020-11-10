@@ -34,48 +34,45 @@ void print_bitcode(const std::string& bc)
 }
 
 API_EXPORT(size_t)
-assemble(LLVMContextRef context, const char *ir, const char **bitcode)
+assemble(LLVMContextRef context, const char *ir, const char **bitcode, const char **errormsg)
 {
-  //printf("%s\n", ir);
-
   llvm::SMDiagnostic error;
 
-  printf("parse assembly\n");
   std::unique_ptr<llvm::Module> m = llvm::parseAssemblyString(ir, error, *llvm::unwrap(context));
 
-  printf("Check error\n");
   if (!m) {
-    llvm::raw_fd_ostream s(STDERR_FILENO, false);
     // Error occurred
-    printf("Print error\n");
-    error.print("test prog", s);
-  }
-  else {
-    printf("Parsed OK\n");
+    std::string errbuf;
+    llvm::raw_string_ostream s(errbuf);
+    error.print("", s);
+    s.flush();
+    *errormsg = T2BC_CreateString(s.str().c_str());
+    return 0;
   }
 
   std::string errorStr;
   llvm::raw_string_ostream os(errorStr);
 
   if (llvm::verifyModule(*m.get(), &os)) {
-    printf("Verification failed\n");
-    std::cerr << os.str() << std:: endl;
-  } else {
-    printf("Verification OK\n");
+    *errormsg = T2BC_CreateString(os.str().c_str());
+    return 0;
   }
 
   std::string tmp;
   llvm::raw_string_ostream bcs(tmp);
 
-  printf("Writing bitcode\n");
   llvm::WriteBitcodeToFile(*m, bcs);
-  //printf("Bitcode\n");
-  //print_bitcode(bcs.str());
   size_t len = bcs.str().size();
   char* copy = (char*)malloc(sizeof(char) * len);
   memcpy(copy, bcs.str().c_str(), sizeof(char) * len);
   *bitcode = copy;
   return len;
+}
+
+API_EXPORT(const char *)
+T2BC_CreateString(const char *msg)
+{
+  return strdup(msg);
 }
 
 API_EXPORT(void)
