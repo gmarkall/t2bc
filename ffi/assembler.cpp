@@ -36,7 +36,7 @@ void print_bitcode(const std::string& bc)
 API_EXPORT(size_t)
 assemble(LLVMContextRef context, const char *ir, const char **bitcode)
 {
-  printf("%s\n", ir);
+  //printf("%s\n", ir);
 
   llvm::SMDiagnostic error;
 
