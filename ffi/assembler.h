@@ -15,8 +15,11 @@
 
 extern "C" {
 
+  API_EXPORT(size_t)
+  assemble(LLVMContextRef ref, const char *ir, const char **bitcode);
+
   API_EXPORT(void)
-  assemble(LLVMContextRef ref, const char *ir);
+  T2BC_DisposeString(const char *msg);
 
   API_EXPORT(LLVMContextRef)
   T2BC_GetGlobalContext();

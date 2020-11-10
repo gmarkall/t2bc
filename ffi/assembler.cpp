@@ -33,8 +33,8 @@ void print_bitcode(const std::string& bc)
   std::cerr << std::dec << std::setw(2);
 }
 
-API_EXPORT(void)
-assemble(LLVMContextRef context, const char *ir)
+API_EXPORT(size_t)
+assemble(LLVMContextRef context, const char *ir, const char **bitcode)
 {
   printf("%s\n", ir);
 
@@ -64,13 +64,24 @@ assemble(LLVMContextRef context, const char *ir)
     printf("Verification OK\n");
   }
 
-  std::string bitcode;
-  llvm::raw_string_ostream bcs(bitcode);
+  std::string tmp;
+  llvm::raw_string_ostream bcs(tmp);
 
   printf("Writing bitcode\n");
   llvm::WriteBitcodeToFile(*m, bcs);
-  printf("Bitcode\n");
-  print_bitcode(bcs.str());
+  //printf("Bitcode\n");
+  //print_bitcode(bcs.str());
+  size_t len = bcs.str().size();
+  char* copy = (char*)malloc(sizeof(char) * len);
+  memcpy(copy, bcs.str().c_str(), sizeof(char) * len);
+  *bitcode = copy;
+  return len;
+}
+
+API_EXPORT(void)
+T2BC_DisposeString(const char *msg)
+{
+  free(const_cast<char*>(msg));
 }
 
 API_EXPORT(LLVMContextRef)
