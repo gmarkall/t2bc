@@ -6,12 +6,12 @@ from t2bc.binding.common import _decode_string, _is_shutting_down
 from t2bc.utils import get_library_name
 
 
-#def _make_opaque_ref(name):
-#    newcls = type(name, (ctypes.Structure,), {})
-#    return ctypes.POINTER(newcls)
-#
-#
-#LLVMContextRef = _make_opaque_ref("LLVMContext")
+def _make_opaque_ref(name):
+    newcls = type(name, (ctypes.Structure,), {})
+    return ctypes.POINTER(newcls)
+
+
+LLVMContextRef = _make_opaque_ref("LLVMContext")
 #LLVMModuleRef = _make_opaque_ref("LLVMModule")
 #LLVMValueRef = _make_opaque_ref("LLVMValue")
 #LLVMTypeRef = _make_opaque_ref("LLVMType")
