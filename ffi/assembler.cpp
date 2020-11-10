@@ -1,5 +1,6 @@
 #include "assembler.h"
 #include "llvm/AsmParser/Parser.h"
+#include "llvm/Bitcode/BitcodeWriter.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Verifier.h"
@@ -14,6 +15,23 @@
 #include <unistd.h>
 #include <memory>
 #include <iostream>
+#include <iomanip>
+
+void print_bitcode(const std::string& bc)
+{
+  std::cerr << bc;
+  return;
+
+  char c = std::cerr.fill('0');
+  std::cerr << std::hex << std::setw(2);
+
+  for (const char& c: bc) {
+    std::cerr << c;
+  }
+
+  std::cerr.fill(c);
+  std::cerr << std::dec << std::setw(2);
+}
 
 API_EXPORT(void)
 assemble(LLVMContextRef context, const char *ir)
@@ -45,6 +63,14 @@ assemble(LLVMContextRef context, const char *ir)
   } else {
     printf("Verification OK\n");
   }
+
+  std::string bitcode;
+  llvm::raw_string_ostream bcs(bitcode);
+
+  printf("Writing bitcode\n");
+  llvm::WriteBitcodeToFile(*m, bcs);
+  printf("Bitcode\n");
+  print_bitcode(bcs.str());
 }
 
 API_EXPORT(LLVMContextRef)
