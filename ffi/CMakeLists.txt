@@ -6,6 +6,8 @@ project(t2bc_ffi)
 
 include(CheckIncludeFiles)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 find_package(LLVM REQUIRED CONFIG)
 
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
