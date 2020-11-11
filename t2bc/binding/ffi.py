@@ -12,29 +12,6 @@ def _make_opaque_ref(name):
 
 
 LLVMContextRef = _make_opaque_ref("LLVMContext")
-#LLVMModuleRef = _make_opaque_ref("LLVMModule")
-#LLVMValueRef = _make_opaque_ref("LLVMValue")
-#LLVMTypeRef = _make_opaque_ref("LLVMType")
-#LLVMExecutionEngineRef = _make_opaque_ref("LLVMExecutionEngine")
-#LLVMPassManagerBuilderRef = _make_opaque_ref("LLVMPassManagerBuilder")
-#LLVMPassManagerRef = _make_opaque_ref("LLVMPassManager")
-#LLVMTargetDataRef = _make_opaque_ref("LLVMTargetData")
-#LLVMTargetLibraryInfoRef = _make_opaque_ref("LLVMTargetLibraryInfo")
-#LLVMTargetRef = _make_opaque_ref("LLVMTarget")
-#LLVMTargetMachineRef = _make_opaque_ref("LLVMTargetMachine")
-#LLVMMemoryBufferRef = _make_opaque_ref("LLVMMemoryBuffer")
-#LLVMAttributeListIterator = _make_opaque_ref("LLVMAttributeListIterator")
-#LLVMAttributeSetIterator = _make_opaque_ref("LLVMAttributeSetIterator")
-#LLVMGlobalsIterator = _make_opaque_ref("LLVMGlobalsIterator")
-#LLVMFunctionsIterator = _make_opaque_ref("LLVMFunctionsIterator")
-#LLVMBlocksIterator = _make_opaque_ref("LLVMBlocksIterator")
-#LLVMArgumentsIterator = _make_opaque_ref("LLVMArgumentsIterator")
-#LLVMInstructionsIterator = _make_opaque_ref("LLVMInstructionsIterator")
-#LLVMOperandsIterator = _make_opaque_ref("LLVMOperandsIterator")
-#LLVMTypesIterator = _make_opaque_ref("LLVMTypesIterator")
-#LLVMObjectCacheRef = _make_opaque_ref("LLVMObjectCache")
-#LLVMObjectFileRef = _make_opaque_ref("LLVMObjectFile")
-#LLVMSectionIteratorRef = _make_opaque_ref("LLVMSectionIterator")
 
 
 class _lib_wrapper(object):
@@ -258,9 +235,8 @@ class OutputBytes(object):
 
     def __init__(self, owned=True, init=None):
         if init is not None:
-            self._ptr = init 
+            self._ptr = init
         else:
-            #self._ptr = ctypes.POINTER(ctypes.c_char)()
             self._ptr = ctypes.POINTER(ctypes.c_void_p)()
         self._as_parameter_ = ctypes.byref(self._ptr)
         self._owned = owned
