@@ -4,35 +4,35 @@
 #include "llvm-c/Types.h"
 
 #if defined(_MSC_VER)
-  #define HAVE_DECLSPEC_DLL
+#define HAVE_DECLSPEC_DLL
 #endif
 
 #if defined(HAVE_DECLSPEC_DLL)
-  #define API_EXPORT(RTYPE) __declspec(dllexport) RTYPE
+#define API_EXPORT(RTYPE) __declspec(dllexport) RTYPE
 #else
-  #define API_EXPORT(RTYPE) RTYPE
+#define API_EXPORT(RTYPE) RTYPE
 #endif
 
 extern "C" {
 
-  API_EXPORT(size_t)
-  assemble(LLVMContextRef ref, const char *ir, const char **bitcode, const char **errormsg);
+API_EXPORT(size_t)
+assemble(LLVMContextRef ref, const char *ir, const char **bitcode,
+         const char **errormsg);
 
-  API_EXPORT(const char *)
-  T2BC_CreateString(const char *msg);
+API_EXPORT(const char *)
+T2BC_CreateString(const char *msg);
 
-  API_EXPORT(void)
-  T2BC_DisposeString(const char *msg);
+API_EXPORT(void)
+T2BC_DisposeString(const char *msg);
 
-  API_EXPORT(LLVMContextRef)
-  T2BC_GetGlobalContext();
+API_EXPORT(LLVMContextRef)
+T2BC_GetGlobalContext();
 
-  API_EXPORT(LLVMContextRef)
-  T2BC_ContextCreate();
+API_EXPORT(LLVMContextRef)
+T2BC_ContextCreate();
 
-  API_EXPORT(void)
-  T2BC_ContextDispose(LLVMContextRef context);
-
+API_EXPORT(void)
+T2BC_ContextDispose(LLVMContextRef context);
 }
 
 #endif /* T2BC_ASSEMBLER_H_ */
