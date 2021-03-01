@@ -74,9 +74,9 @@ class T2bcInstall(install):
     # Ensure install sees the libt2bc shared library
     # This seems to only be necessary on OSX.
     def run(self):
-        from llvmlite.utils import get_library_files
+        from t2bc.utils import get_library_files
         self.distribution.package_data = {
-            "llvmlite.binding": get_library_files(),
+            "t2bc.binding": get_library_files(),
         }
         install.run(self)
 
@@ -156,7 +156,7 @@ with open('README.rst') as f:
 
 
 setup(name='t2bc',
-      description="lightweight wrapper around LLVM parsing and bitcode emission",
+      description="Wrapper around LLVM parsing and bitcode emission",
       version=versioneer.get_version(),
       classifiers=[
           "Development Status :: 4 - Beta",

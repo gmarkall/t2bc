@@ -5,7 +5,6 @@ Build script for the shared library providing the C ABI bridge to LLVM.
 
 from __future__ import print_function
 
-from ctypes.util import find_library
 import re
 import os
 import subprocess
@@ -40,8 +39,8 @@ def run_llvm_config(llvm_config, args):
     err = err.decode()
     rc = p.wait()
     if rc != 0:
-        raise RuntimeError("Command %s returned with code %d; stderr follows:\n%s\n"
-                           % (cmd, rc, err))
+        msg = "Command %s returned with code %d; stderr follows:\n%s\n"
+        raise RuntimeError(msg % (cmd, rc, err))
     return out
 
 
@@ -60,6 +59,7 @@ def find_win32_generator():
 
     # Drop generators that are too old
     vspat = re.compile(r'Visual Studio (\d+)')
+
     def drop_old_vs(g):
         m = vspat.match(g)
         if m is None:
@@ -81,7 +81,7 @@ def find_win32_generator():
             return generator
         finally:
             shutil.rmtree(build_dir)
-    raise RuntimeError("No compatible cmake generator installed on this machine")
+    raise RuntimeError("No compatible cmake generator installed")
 
 
 def main_win32():
@@ -134,8 +134,8 @@ def main_posix(kind, library_ext):
         print(warning + '\n')
     else:
 
-        if not (out.startswith('7.0.1')):
-            msg = ("Building t2bc requires LLVM 7.0.1, got "
+        if not (out.startswith('7.0') and (out[4] in ('0', '1'))):
+            msg = ("Building t2bc requires LLVM 7.0.0 or 7.0.1, got "
                    "{!r}. Be sure to set LLVM_CONFIG to the right executable "
                    "path.".format(out.strip()))
             raise RuntimeError(msg)
@@ -177,7 +177,7 @@ def main():
         main_win32()
     elif sys.platform.startswith('linux'):
         main_posix('linux', '.so')
-    elif sys.platform.startswith(('freebsd','openbsd')):
+    elif sys.platform.startswith(('freebsd', 'openbsd')):
         main_posix('freebsd', '.so')
     elif sys.platform == 'darwin':
         main_posix('osx', '.dylib')

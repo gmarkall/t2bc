@@ -1,5 +1,4 @@
 import os
-import sys
 
 
 # This module must be importable without loading the binding, to avoid
@@ -7,13 +6,10 @@ import sys
 
 def get_library_name():
     """
-    Return the name of the t2bc shared library file.
+    Return the name of the llvmlite shared library file.
     """
     if os.name == 'posix':
-        if sys.platform == 'darwin':
-            return 'libt2bc.dylib'
-        else:
-            return 'libt2bc.so'
+        return 'libt2bc.so'
     else:
         assert os.name == 'nt'
         return 't2bc.dll'
